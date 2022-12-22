@@ -10,6 +10,7 @@ import (
 
 type CalorieCollection struct {
 	calorieCollection []int
+	max               int
 }
 
 // ParseCollectionFromString expects a string that looks like this:
@@ -27,9 +28,13 @@ func ParseCollectionFromString(collectionString string) (*CalorieCollection, err
 	index := 0
 
 	collection := []int{0}
+	max := 0
 
 	for _, s := range splitString {
 		if s == "" {
+			if collection[index] > max {
+				max = collection[index]
+			}
 			index += 1
 			collection = append(collection, 0)
 		} else {
@@ -38,11 +43,13 @@ func ParseCollectionFromString(collectionString string) (*CalorieCollection, err
 				return nil, err
 			}
 			collection[index] = collection[index] + calorieCount
+			
 		}
 	}
 
 	return &CalorieCollection{
 		calorieCollection: collection,
+		max:               max,
 	}, nil
 }
 
@@ -57,8 +64,7 @@ func ParseCollectionFromFile(collectionFileName string) (*CalorieCollection, err
 }
 
 func (cc CalorieCollection) GetMaxCalories() int {
-	sort.Ints(cc.calorieCollection)
-	return cc.calorieCollection[len(cc.calorieCollection)-1]
+	return cc.max
 }
 
 func (cc CalorieCollection) GetTop3Calories() []int {
