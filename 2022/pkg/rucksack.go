@@ -10,6 +10,7 @@ import (
 type RucksackItem rune
 
 type Rucksack struct {
+    AllItems             []RucksackItem
     Compartment1         []RucksackItem
     Compartment2         []RucksackItem
     RepeatedItem         RucksackItem
@@ -19,6 +20,7 @@ type Rucksack struct {
 type RucksackCollection struct {
     Rucksacks                 []Rucksack
     TotalRepeatedItemPriority int
+    BadgePriorityTotal        int
 }
 
 func ParseFileToRucksacks(filename string) (*RucksackCollection, error) {
@@ -33,17 +35,47 @@ func ParseFileToRucksacks(filename string) (*RucksackCollection, error) {
 func ParseLinesToRucksacks(lines []string) *RucksackCollection {
     var rucksacks []Rucksack
     totalRepeatedItemPriority := 0
+    badgePriorityTotal := 0
+    var currentBadgeGroup []Rucksack
 
-    for _, line := range lines {
+    for index, line := range lines {
         rucksack := ParseStringToRucksack(line)
+        currentBadgeGroup = append(currentBadgeGroup, rucksack)
         rucksacks = append(rucksacks, rucksack)
         totalRepeatedItemPriority += rucksack.RepeatedItemPriority
+
+        if (index+1)%3 == 0 {
+            badge := FindBadge(currentBadgeGroup)
+            currentBadgeGroup = []Rucksack{}
+            badgePriorityTotal += badge.Priority()
+        }
+
     }
 
     return &RucksackCollection{
         Rucksacks:                 rucksacks,
         TotalRepeatedItemPriority: totalRepeatedItemPriority,
+        BadgePriorityTotal:        badgePriorityTotal,
     }
+}
+
+// FindBadge is given 3 rucksacks and finds the badge, which is the item that appears in all three
+func FindBadge(badgeGroup []Rucksack) RucksackItem {
+    var firstIntersection []RucksackItem
+
+    for _, item := range badgeGroup[0].AllItems {
+        if CompartmentContains(badgeGroup[1].AllItems, item) {
+            firstIntersection = append(firstIntersection, item)
+        }
+    }
+
+    for _, item := range firstIntersection {
+        if CompartmentContains(badgeGroup[2].AllItems, item) {
+            return item
+        }
+    }
+
+    return 0
 }
 
 func ParseStringToRucksack(rucksackString string) Rucksack {
@@ -60,6 +92,7 @@ func ParseStringToRucksack(rucksackString string) Rucksack {
     }
 
     return Rucksack{
+        AllItems:             rucksackItems,
         Compartment1:         compartment1,
         Compartment2:         compartment2,
         RepeatedItem:         repeatedItem,
@@ -93,4 +126,8 @@ func (item RucksackItem) Priority() int {
 
 func (rc RucksackCollection) GetFormattedTotalPriorities() string {
     return fmt.Sprintf("The total of the priorities of the repeated items is %d", rc.TotalRepeatedItemPriority)
+}
+
+func (rc RucksackCollection) GetFormattedBadgePriorities() string {
+    return fmt.Sprintf("The total of the priorities of the badges is %d", rc.BadgePriorityTotal)
 }

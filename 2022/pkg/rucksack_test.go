@@ -89,3 +89,34 @@ func TestSplitRucksackItems(t *testing.T) {
         })
     }
 }
+
+func TestFindBadge(t *testing.T) {
+    tests := []struct {
+        name       string
+        badgeGroup []Rucksack
+        want       RucksackItem
+    }{
+        {
+            name: "test case",
+            badgeGroup: []Rucksack{
+                {
+                    AllItems: []RucksackItem("vJrwpWtwJgWrhcsFMMfFFhFp"),
+                },
+                {
+                    AllItems: []RucksackItem("jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"),
+                },
+                {
+                    AllItems: []RucksackItem("PmmdzqPrVvPwwTWBwg"),
+                },
+            },
+            want: 'r',
+        },
+    }
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            if got := FindBadge(tt.badgeGroup); got != tt.want {
+                t.Errorf("FindBadge() = %v, want %v", got, tt.want)
+            }
+        })
+    }
+}

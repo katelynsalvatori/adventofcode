@@ -16,5 +16,5 @@ func main() {
     if err != nil {
         fmt.Errorf(err.Error())
     }
-    fmt.Println(rc.GetFormattedTotalPriorities())
+    fmt.Println(rc.GetFormattedBadgePriorities())
 }
