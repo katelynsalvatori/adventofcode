@@ -12,9 +12,12 @@ func main() {
     //games, err := pkg.ParseGamesFromFile("inputs/2.txt")
     //fmt.Println(games.FormattedTotalScore())
 
-    rc, err := pkg.ParseFileToRucksacks("inputs/3.txt")
+    //rc, err := pkg.ParseFileToRucksacks("inputs/3.txt")
+    //fmt.Println(rc.GetFormattedBadgePriorities())
+
+    ap, err := pkg.ParseFileToAssignmentPairs("inputs/4.txt")
     if err != nil {
         fmt.Errorf(err.Error())
     }
-    fmt.Println(rc.GetFormattedBadgePriorities())
+    fmt.Println(pkg.GetFormattedPartialOverlapCounts(ap))
 }
