@@ -6,18 +6,11 @@ import (
 )
 
 func main() {
-    // cc, err := pkg.ParseCollectionFromFile("inputs/1.txt")
-    // fmt.Println(cc.GetFormattedMaxCalories())
+    fileLines, err := pkg.ReadFileLinesForDay(4)
 
-    //games, err := pkg.ParseGamesFromFile("inputs/2.txt")
-    //fmt.Println(games.FormattedTotalScore())
-
-    //rc, err := pkg.ParseFileToRucksacks("inputs/3.txt")
-    //fmt.Println(rc.GetFormattedBadgePriorities())
-
-    ap, err := pkg.ParseFileToAssignmentPairs("inputs/4.txt")
     if err != nil {
         fmt.Errorf(err.Error())
     }
+    ap := pkg.ParseLinesToAssignmentPairs(fileLines)
     fmt.Println(pkg.GetFormattedPartialOverlapCounts(ap))
 }

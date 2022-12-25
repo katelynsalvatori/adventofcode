@@ -2,7 +2,6 @@ package pkg
 
 import (
     "fmt"
-    "os"
     "strconv"
     "strings"
 )
@@ -44,16 +43,6 @@ func (ap AssignmentPair) PairPartiallyOverlaps() bool {
 
 func (a Assignment) Contains(section int) bool {
     return section >= a.MinSection && section <= a.MaxSection
-}
-
-func ParseFileToAssignmentPairs(filename string) ([]AssignmentPair, error) {
-    fileBytes, err := os.ReadFile(filename)
-
-    if err != nil {
-        return nil, err
-    }
-
-    return ParseLinesToAssignmentPairs(strings.Split(string(fileBytes), "\n")), nil
 }
 
 func ParseLinesToAssignmentPairs(lines []string) []AssignmentPair {
