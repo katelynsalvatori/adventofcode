@@ -6,12 +6,11 @@ import (
 )
 
 func main() {
-    fileLines, err := pkg.ReadFileLinesForDay(5)
+    fileString, err := pkg.ReadFileForDay(6)
 
     if err != nil {
         fmt.Errorf(err.Error())
     }
-    cm := pkg.ParseLinesToCrateMovement(fileLines)
-    newCm := cm.ExecuteInstructions()
-    fmt.Println(newCm.GetTopCrates())
+
+    fmt.Printf("%d", pkg.FindStartOfMessageMarker(fileString))
 }
