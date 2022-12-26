@@ -31,7 +31,7 @@ func ParseLinesToCrateMovement(lines []string) *CrateMovement {
         }
     }
 
-    instructions := ParseLinesToInstructions(lines[delimiterIndex+1:])
+    instructions := ParseLinesToInstructions(lines[delimiterIndex+2:])
     crateStacks := ParseLinesToStacks(lines[:delimiterIndex], numberOfStacks)
 
     return &CrateMovement{
@@ -50,9 +50,7 @@ func ParseLinesToInstructions(lines []string) []Instruction {
     var instructions []Instruction
 
     for _, line := range lines {
-        if line != "" {
-            instructions = append(instructions, ParseLineToInstruction(line))
-        }
+        instructions = append(instructions, ParseLineToInstruction(line))
     }
 
     return instructions
