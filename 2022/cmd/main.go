@@ -6,11 +6,12 @@ import (
 )
 
 func main() {
-    fileLines, err := pkg.ReadFileLinesForDay(4)
+    fileLines, err := pkg.ReadFileLinesForDay(5)
 
     if err != nil {
         fmt.Errorf(err.Error())
     }
-    ap := pkg.ParseLinesToAssignmentPairs(fileLines)
-    fmt.Println(pkg.GetFormattedPartialOverlapCounts(ap))
+    cm := pkg.ParseLinesToCrateMovement(fileLines)
+    newCm := cm.ExecuteInstructions()
+    fmt.Println(newCm.GetTopCrates())
 }
