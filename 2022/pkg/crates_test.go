@@ -81,7 +81,7 @@ func TestCrateMovement_ExecuteInstructions(t *testing.T) {
                     },
                 },
             },
-            want: "AB",
+            want: "AC",
         },
         {
             name: "test2",
@@ -97,7 +97,7 @@ func TestCrateMovement_ExecuteInstructions(t *testing.T) {
                     "move 1 from 2 to 1",
                 }),
             },
-            want: "GHF",
+            want: "HGF",
         },
         {
             name: "test3",
