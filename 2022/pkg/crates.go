@@ -84,12 +84,12 @@ func ParseLinesToStacks(lines []string, numberOfStacks int) []stack.Stack {
     return crateStacks
 }
 
-func reverse(s []string) []string {
-    for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
-        s[i], s[j] = s[j], s[i]
+func reverse(slice []string) []string {
+    for i, j := 0, len(slice)-1; i < j; i, j = i+1, j-1 {
+        slice[i], slice[j] = slice[j], slice[i]
     }
 
-    return s
+    return slice
 }
 
 // ExecuteInstructions updates the crate stacks with the existing instructions
@@ -97,10 +97,14 @@ func (cm CrateMovement) ExecuteInstructions() *CrateMovement {
     for len(cm.Instructions) > 0 {
         instruction := cm.Instructions[0]
         cm.Instructions = cm.Instructions[1:]
+        var cratesToMove stack.Stack
 
         for i := 0; i < instruction.NumberToMove; i++ {
-            crate := cm.CrateStacks[instruction.Source-1].Pop()
-            cm.CrateStacks[instruction.Destination-1].Push(crate)
+            cratesToMove.Push(cm.CrateStacks[instruction.Source-1].Pop())
+        }
+
+        for cratesToMove.Len() > 0 {
+            cm.CrateStacks[instruction.Destination-1].Push(cratesToMove.Pop())
         }
     }
 
